@@ -1,0 +1,16 @@
+Private Sub Worksheet_Change(ByVal Target As Range)
+If Not Intersect(Target, Range("A1 Z100")) Is Nothing Then
+  Dim objHTTP As Object
+  Dim URL As String, Json As String, Collett As String, CellValue As String, SheetName As String
+  Dim RowNum As Long
+  Collett = Split(Cells(1, Target.Column).Address, "$")(1) 'Column Letter
+  RowNum = Target.Row 'Row Number
+  SheetName = Name 'Sheet Name
+  CellValue = Target.Value 'Cell Value
+  Set objHTTP = CreateObject("MSXML2.ServerXMLHTTP")
+  URL = "[URL]?SheetName=" & SheetName & "&Column=" & Collett & "&RowNumber=" & RowNum & "&CellValue=" & CellValue
+  objHTTP.Open "PATCH", URL, False
+  objHTTP.setRequestHeader "Content-type", "application/json"
+  objHTTP send(Json) 'Send Information
+End If
+End Sub
